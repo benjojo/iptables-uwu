@@ -1,7 +1,9 @@
 # iptables-uwu
 
-This is a xtables module that uwu's the output packet, mostly as a shitpost, but also as a future referance
-to me on how to write xtables modules that tamper with the outgoing packet in kernel space.
+![demo](.github/image.png)
+
+This is a xtables module that can uwu outgoing packets, mostly as a shitpost, but also as a future referance
+to me on how to write xtables modules that tamper with a outgoing packet in kernel space.
 
 This repo is mostly based on https://github.com/xiaosuo/xtables-misc and a lot of the code is adapted from that.
 

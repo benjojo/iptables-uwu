@@ -38,58 +38,40 @@ static unsigned int skb_uwu(struct sk_buff *skb, unsigned int offset)
 
 	// In order to preserve protocols like IRC, we must prevent the command word (like PRIVMSG)
 	// from being uwu'd (pwivmsg)
-	int firstIsAllCaps = 0;
-	unsigned int oldOffset = offset;
-	unsigned int oldHeadlen = headlen;
-	unsigned int letterOffset = 0;
+	int uwu_mode = 0;
 
 	if (headlen > offset) {
 		headlen -= offset;
-		while (headlen-- > 0) {
-			offset++;
-			if (skb->data[offset] >= 'A' && skb->data[offset] <= 'Z') {
-				firstIsAllCaps = 1;
-				goto zoop;
-			}
-			if (skb->data[offset] == ' ' || skb->data[offset] == "\t" || 
-				skb->data[offset] == "\r" || skb->data[offset] == "\n" ) {
-				letterOffset = offset;
-				break;
-			}
-			firstIsAllCaps = 0;
-			break;
-			zoop: ;
-		}
-	}
-
-	offset = oldOffset;
-	headlen = oldHeadlen;
-
-	if (headlen > offset) {
-		headlen -= offset;
-		if (firstIsAllCaps) {
-			offset = letterOffset;
-		}
 
 		while (headlen-- > 0) {
 			offset++;
-            switch (skb->data[offset]) 
-            {
-            case 'l':
-                skb->data[offset] = 'w';
-                break;
-            case 'r':
-                skb->data[offset] = 'w';
-                break;
-            case 'L':
-                skb->data[offset] = 'W';
-                break;
-            case 'R':
-                skb->data[offset] = 'W';
-                break;
-            default:
-                break;
-            }
+			if (uwu_mode) {
+				switch (skb->data[offset]) 
+				{
+				case 'l':
+					skb->data[offset] = 'w';
+					break;
+				case 'r':
+					skb->data[offset] = 'w';
+					break;
+				case 'L':
+					skb->data[offset] = 'W';
+					break;
+				case 'R':
+					skb->data[offset] = 'W';
+					break;
+				case '\n':
+					uwu_mode = 0;
+					break;
+				default:
+					break;
+				}
+			} else {
+				if (!(skb->data[offset] >= 'A' && skb->data[offset] <= 'Z')) {
+					uwu_mode = 1;
+				}
+			}
+
 			// skb->data[offset++] ^= key[key_off++];
 		}
 		offset = 0;
